@@ -2,8 +2,9 @@ package sendbirdclient
 
 import (
 	"net/url"
-	"sendbirdclient/templates"
 	"strings"
+
+	"github.com/blazingorb/sendbirdclient/templates"
 )
 
 type channelMetaTemplateData struct {

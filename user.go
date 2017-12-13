@@ -3,8 +3,9 @@ package sendbirdclient
 import (
 	"errors"
 	"net/url"
-	"sendbirdclient/templates"
 	"strings"
+
+	"github.com/blazingorb/sendbirdclient/templates"
 )
 
 type User struct {

@@ -3,7 +3,8 @@ package sendbirdclient
 import (
 	"errors"
 	"net/url"
-	"sendbirdclient/templates"
+
+	"github.com/blazingorb/sendbirdclient/templates"
 )
 
 type OpenChannel struct {
