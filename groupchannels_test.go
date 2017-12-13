@@ -1,7 +1,7 @@
 package sendbirdclient_test
 
 import (
-	. "sendbirdclient"
+	. "github.com/blazingorb/sendbirdclient"
 	"strings"
 	"testing"
 )

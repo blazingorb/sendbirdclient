@@ -1,9 +1,10 @@
 package sendbirdclient_test
 
 import (
-	. "sendbirdclient"
 	"strings"
 	"testing"
+
+	. "github.com/blazingorb/sendbirdclient"
 )
 
 const (
