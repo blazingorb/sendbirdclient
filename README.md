@@ -1,6 +1,8 @@
 Sendbird Client Package for Golang
 ==================================
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/blazingorb/sendbirdclient)](https://goreportcard.com/report/github.com/blazingorb/sendbirdclient)
+
 ## Features
 
 This library provides wrapper functions for Sendbird Platform API written in Golang and support following Sendbird APIs:
@@ -74,6 +76,6 @@ func check(err error) {
 For more detail sample cases, please refer to files under examples folder.
 
 [Users API]: https://docs.sendbird.com/platform#user
-[User Metadata API]:　https://docs.sendbird.com/platform#user_metadata
+[User Metadata API]: https://docs.sendbird.com/platform#user_metadata
 [Open Channels API]: https://docs.sendbird.com/platform#open_channel
 [Group Channels API]: https://docs.sendbird.com/platform#group_channel
