@@ -3,7 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	sendbirdclient "sendbirdclient"
+
+	sendbirdclient "github.com/blazingorb/sendbirdclient"
 )
 
 const (
@@ -75,7 +76,6 @@ func main() {
 		}
 
 	}
-
 }
 
 func check(err error) {

@@ -30,3 +30,9 @@ const (
 	TokenTypeGCM  = "GCM"
 	TokenTypeAPNS = "APNS"
 )
+
+//Sendbird channel type
+const (
+	ChannelTypeOpenChannel  = "open_channels"
+	ChannelTypeGroupChannel = "group_channels"
+)
