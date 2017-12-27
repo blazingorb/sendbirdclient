@@ -8,20 +8,20 @@ import (
 )
 
 type WebhookHelper struct {
-	OnOpenChannelMsgSend            func(payload map[string]string) error
-	OnGroupChannelMsgSend           func(payload map[string]string) error
-	OnOpenChannelMsgDeleted         func(payload map[string]string) error
-	OnGroupChannelMsgDeleted        func(payload map[string]string) error
-	OnGroupChannelMsgRead           func(payload map[string]string) error
-	OnOpenChannelCreated            func(payload map[string]string) error
-	OnGroupChannelCreated           func(payload map[string]string) error
-	OnOpenChannelRemoved            func(payload map[string]string) error
-	OnGroupChannelInvited           func(payload map[string]string) error
-	OnGroupChannelJoined            func(payload map[string]string) error
-	OnGroupChannelDeclineInvite     func(payload map[string]string) error
-	OnUserBlocked                   func(payload map[string]string) error
-	OnUserUnblocked                 func(payload map[string]string) error
-	OnAlertUserMsgRateLimitExceeded func(payload map[string]string) error
+	OnOpenChannelMsgSend            func(message map[string]interface{}) error
+	OnGroupChannelMsgSend           func(message map[string]interface{}) error
+	OnOpenChannelMsgDeleted         func(message map[string]interface{}) error
+	OnGroupChannelMsgDeleted        func(message map[string]interface{}) error
+	OnGroupChannelMsgRead           func(message map[string]interface{}) error
+	OnOpenChannelCreated            func(message map[string]interface{}) error
+	OnGroupChannelCreated           func(message map[string]interface{}) error
+	OnOpenChannelRemoved            func(message map[string]interface{}) error
+	OnGroupChannelInvited           func(message map[string]interface{}) error
+	OnGroupChannelJoined            func(message map[string]interface{}) error
+	OnGroupChannelDeclineInvite     func(message map[string]interface{}) error
+	OnUserBlocked                   func(message map[string]interface{}) error
+	OnUserUnblocked                 func(message map[string]interface{}) error
+	OnAlertUserMsgRateLimitExceeded func(message map[string]interface{}) error
 }
 
 func (wh *WebhookHelper) SendbirdWebhook(w http.ResponseWriter, req *http.Request) {
@@ -47,13 +47,13 @@ func (wh *WebhookHelper) SendbirdWebhook(w http.ResponseWriter, req *http.Reques
 		panic(err)
 	}
 
-	var pl map[string]string
+	var pl map[string]interface{}
 	err = json.Unmarshal(body, &pl)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("Payload: %+v \n", pl)
+	fmt.Printf("Webhook Message: %+v \n", pl)
 
 	switch pl["category"] {
 	case WebhookCategoryOpenChannelMsgSend:
@@ -96,20 +96,20 @@ func (wh *WebhookHelper) SendbirdWebhook(w http.ResponseWriter, req *http.Reques
 
 func NewWebhookHelper() *WebhookHelper {
 	wh := &WebhookHelper{
-		OnOpenChannelMsgSend:            func(payload map[string]string) error { return nil },
-		OnGroupChannelMsgSend:           func(payload map[string]string) error { return nil },
-		OnOpenChannelMsgDeleted:         func(payload map[string]string) error { return nil },
-		OnGroupChannelMsgDeleted:        func(payload map[string]string) error { return nil },
-		OnGroupChannelMsgRead:           func(payload map[string]string) error { return nil },
-		OnOpenChannelCreated:            func(payload map[string]string) error { return nil },
-		OnGroupChannelCreated:           func(payload map[string]string) error { return nil },
-		OnOpenChannelRemoved:            func(payload map[string]string) error { return nil },
-		OnGroupChannelInvited:           func(payload map[string]string) error { return nil },
-		OnGroupChannelJoined:            func(payload map[string]string) error { return nil },
-		OnGroupChannelDeclineInvite:     func(payload map[string]string) error { return nil },
-		OnUserBlocked:                   func(payload map[string]string) error { return nil },
-		OnUserUnblocked:                 func(payload map[string]string) error { return nil },
-		OnAlertUserMsgRateLimitExceeded: func(payload map[string]string) error { return nil },
+		OnOpenChannelMsgSend:            func(message map[string]interface{}) error { return nil },
+		OnGroupChannelMsgSend:           func(message map[string]interface{}) error { return nil },
+		OnOpenChannelMsgDeleted:         func(message map[string]interface{}) error { return nil },
+		OnGroupChannelMsgDeleted:        func(message map[string]interface{}) error { return nil },
+		OnGroupChannelMsgRead:           func(message map[string]interface{}) error { return nil },
+		OnOpenChannelCreated:            func(message map[string]interface{}) error { return nil },
+		OnGroupChannelCreated:           func(message map[string]interface{}) error { return nil },
+		OnOpenChannelRemoved:            func(message map[string]interface{}) error { return nil },
+		OnGroupChannelInvited:           func(message map[string]interface{}) error { return nil },
+		OnGroupChannelJoined:            func(message map[string]interface{}) error { return nil },
+		OnGroupChannelDeclineInvite:     func(message map[string]interface{}) error { return nil },
+		OnUserBlocked:                   func(message map[string]interface{}) error { return nil },
+		OnUserUnblocked:                 func(message map[string]interface{}) error { return nil },
+		OnAlertUserMsgRateLimitExceeded: func(message map[string]interface{}) error { return nil },
 	}
 
 	return wh
