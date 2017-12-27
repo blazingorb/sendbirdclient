@@ -16,6 +16,8 @@ const (
 	SendbirdClientErrorKeyValueMismatch = "Key and value are mismatched."
 	SendbirdClientErrorUnsupportMethod  = "Unsupport http method."
 	SendbirdClientErrorNotImplemented   = "Not implemented."
+
+	SendbirdClientErrorUnsuppoertedWebhookCategory = "Unsupport webhook category."
 )
 
 type sendbirdErrorResponse struct {
