@@ -7,21 +7,32 @@ import (
 	"net/http"
 )
 
+//Sendbird Webhook Payload Category
+type webhookCategory string
+
+const (
+	WebhookCategoryOpenChannelMsgSend        webhookCategory = "open_channel:message_send"
+	WebhookCategoryGroupChannelMsgSend       webhookCategory = "group_channel:message_send"
+	WebhookCategoryOpenChannelMsgDeleted     webhookCategory = "open_channel:message_delete"
+	WebhookCategoryGroupChannelMsgDeleted    webhookCategory = "group_channel:message_delete"
+	WebhookCategoryGroupChannelMsgRead       webhookCategory = "group_channel:message_read"
+	WebhookCategoryOpenChannelCreated        webhookCategory = "open_channel:create"
+	WebhookCategoryGroupChannelCreated       webhookCategory = "group_channel:create"
+	WebhookCategoryOpenChannelRemoved        webhookCategory = "open_channel:remove"
+	WebhookCategoryGroupChannelInvited       webhookCategory = "group_channel:invite"
+	WebhookCategoryGroupChannelJoined        webhookCategory = "group_channel:join"
+	WebhookCategoryGroupChannelDeclineInvite webhookCategory = "group_channel:decline_invite"
+	WebhookCategoryUserBlocked               webhookCategory = "user:block"
+	WebhookCategoryUserUnblocked             webhookCategory = "user:unblock"
+	WebhookCategoryUserMsgRateLimitExceeded  webhookCategory = "alert:user_message_rate_limit_exceeded	"
+)
+
+type WebhookCallback func(message interface{}) error
+
+// var WebhookStub = func(map[string]interface{}) error { return nil }
+
 type WebhookHelper struct {
-	OnOpenChannelMsgSend            func(message map[string]interface{}) error
-	OnGroupChannelMsgSend           func(message map[string]interface{}) error
-	OnOpenChannelMsgDeleted         func(message map[string]interface{}) error
-	OnGroupChannelMsgDeleted        func(message map[string]interface{}) error
-	OnGroupChannelMsgRead           func(message map[string]interface{}) error
-	OnOpenChannelCreated            func(message map[string]interface{}) error
-	OnGroupChannelCreated           func(message map[string]interface{}) error
-	OnOpenChannelRemoved            func(message map[string]interface{}) error
-	OnGroupChannelInvited           func(message map[string]interface{}) error
-	OnGroupChannelJoined            func(message map[string]interface{}) error
-	OnGroupChannelDeclineInvite     func(message map[string]interface{}) error
-	OnUserBlocked                   func(message map[string]interface{}) error
-	OnUserUnblocked                 func(message map[string]interface{}) error
-	OnAlertUserMsgRateLimitExceeded func(message map[string]interface{}) error
+	routing map[webhookCategory][]WebhookCallback
 }
 
 func (wh *WebhookHelper) SendbirdWebhook(w http.ResponseWriter, req *http.Request) {
@@ -55,37 +66,9 @@ func (wh *WebhookHelper) SendbirdWebhook(w http.ResponseWriter, req *http.Reques
 
 	fmt.Printf("Webhook Message: %+v \n", pl)
 
-	switch pl["category"] {
-	case WebhookCategoryOpenChannelMsgSend:
-		err = wh.OnOpenChannelMsgSend(pl)
-	case WebhookCategoryGroupChannelMsgSend:
-		err = wh.OnGroupChannelMsgSend(pl)
-	case WebhookCategoryOpenChannelMsgDeleted:
-		err = wh.OnOpenChannelMsgDeleted(pl)
-	case WebhookCategoryGroupChannelMsgDeleted:
-		err = wh.OnGroupChannelMsgDeleted(pl)
-	case WebhookCategoryGroupChannelMsgRead:
-		err = wh.OnGroupChannelMsgRead(pl)
-	case WebhookCategoryOpenChannelCreated:
-		err = wh.OnOpenChannelCreated(pl)
-	case WebhookCategoryGroupChannelCreated:
-		err = wh.OnGroupChannelCreated(pl)
-	case WebhookCategoryOpenChannelRemoved:
-		err = wh.OnOpenChannelRemoved(pl)
-	case WebhookCategoryGroupChannelInvited:
-		err = wh.OnGroupChannelInvited(pl)
-	case WebhookCategoryGroupChannelJoined:
-		err = wh.OnGroupChannelJoined(pl)
-	case WebhookCategoryGroupChannelDeclineInvite:
-		err = wh.OnGroupChannelDeclineInvite(pl)
-	case WebhookCategoryUserBlocked:
-		err = wh.OnUserBlocked(pl)
-	case WebhookCategoryUserUnblocked:
-		err = wh.OnUserUnblocked(pl)
-	case WebhookCategoryUserMsgRateLimitExceeded:
-		err = wh.OnAlertUserMsgRateLimitExceeded(pl)
-	default:
-		http.Error(w, SendbirdClientErrorUnsuppoertedWebhookCategory, http.StatusInternalServerError)
+	callbacks, _ := wh.routing[pl["category"].(webhookCategory)]
+	for _, callback := range callbacks {
+		callback(pl)
 	}
 
 	if err != nil {
@@ -94,22 +77,24 @@ func (wh *WebhookHelper) SendbirdWebhook(w http.ResponseWriter, req *http.Reques
 
 }
 
+func (h *WebhookHelper) Subscribe(callbackTopic webhookCategory, callback WebhookCallback) {
+	callbacks, ok := h.routing[callbackTopic]
+	if !ok {
+		h.routing[callbackTopic] = []WebhookCallback{callback}
+	}
+
+	for _, c := range callbacks {
+		if &c == &callback {
+			return
+		}
+	}
+
+	h.routing[callbackTopic] = append(callbacks, callback)
+}
+
 func NewWebhookHelper() *WebhookHelper {
 	wh := &WebhookHelper{
-		OnOpenChannelMsgSend:            func(message map[string]interface{}) error { return nil },
-		OnGroupChannelMsgSend:           func(message map[string]interface{}) error { return nil },
-		OnOpenChannelMsgDeleted:         func(message map[string]interface{}) error { return nil },
-		OnGroupChannelMsgDeleted:        func(message map[string]interface{}) error { return nil },
-		OnGroupChannelMsgRead:           func(message map[string]interface{}) error { return nil },
-		OnOpenChannelCreated:            func(message map[string]interface{}) error { return nil },
-		OnGroupChannelCreated:           func(message map[string]interface{}) error { return nil },
-		OnOpenChannelRemoved:            func(message map[string]interface{}) error { return nil },
-		OnGroupChannelInvited:           func(message map[string]interface{}) error { return nil },
-		OnGroupChannelJoined:            func(message map[string]interface{}) error { return nil },
-		OnGroupChannelDeclineInvite:     func(message map[string]interface{}) error { return nil },
-		OnUserBlocked:                   func(message map[string]interface{}) error { return nil },
-		OnUserUnblocked:                 func(message map[string]interface{}) error { return nil },
-		OnAlertUserMsgRateLimitExceeded: func(message map[string]interface{}) error { return nil },
+		routing: make(map[webhookCategory][]WebhookCallback),
 	}
 
 	return wh

@@ -36,21 +36,3 @@ const (
 	ChannelTypeOpenChannel  = "open_channels"
 	ChannelTypeGroupChannel = "group_channels"
 )
-
-//Sendbird Webhook Payload Category
-const (
-	WebhookCategoryOpenChannelMsgSend        = "open_channel:message_send"
-	WebhookCategoryGroupChannelMsgSend       = "group_channel:message_send"
-	WebhookCategoryOpenChannelMsgDeleted     = "open_channel:message_delete"
-	WebhookCategoryGroupChannelMsgDeleted    = "group_channel:message_delete"
-	WebhookCategoryGroupChannelMsgRead       = "group_channel:message_read"
-	WebhookCategoryOpenChannelCreated        = "open_channel:create"
-	WebhookCategoryGroupChannelCreated       = "group_channel:create"
-	WebhookCategoryOpenChannelRemoved        = "open_channel:remove"
-	WebhookCategoryGroupChannelInvited       = "group_channel:invite"
-	WebhookCategoryGroupChannelJoined        = "group_channel:join"
-	WebhookCategoryGroupChannelDeclineInvite = "group_channel:decline_invite"
-	WebhookCategoryUserBlocked               = "user:block"
-	WebhookCategoryUserUnblocked             = "user:unblock"
-	WebhookCategoryUserMsgRateLimitExceeded  = "alert:user_message_rate_limit_exceeded	"
-)
