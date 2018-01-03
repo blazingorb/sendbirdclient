@@ -66,7 +66,8 @@ func (wh *WebhookHelper) SendbirdWebhook(w http.ResponseWriter, req *http.Reques
 
 	fmt.Printf("Webhook Message: %+v \n", pl)
 
-	callbacks, _ := wh.routing[pl["category"].(webhookCategory)]
+	//callbacks, _ := wh.routing[pl["category"].(webhookCategory)]
+	callbacks, _ := wh.routing[webhookCategory(pl["category"].(string))]
 	for _, callback := range callbacks {
 		callback(pl)
 	}
