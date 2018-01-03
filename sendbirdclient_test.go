@@ -8,7 +8,7 @@ import (
 
 const (
 	//apiKey         = "Please input your Sendbird ApiKey here."
-	apiKeyEnvVariableName = "SendbirdApiKey"
+	apiKeyEnvVariableName = "SENDBIRD_API_KEY"
 	baseURL               = "api.sendbird.com"
 	testGCMToken          = "TestGCMToken"
 	testAPNToken          = "TestAPNToken"
