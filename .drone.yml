@@ -1,0 +1,27 @@
+workspace:
+  base: /go
+  path: src/github.com/blazingorb/sendbirdclient
+
+pipeline:
+
+  test:
+    image: golang:latest
+    pull: true
+    secrets: [ SENDBIRD_API_KEY ]
+    commands: 
+      - ls -la
+      - go test -v -cover
+
+  slack_report:
+      image: plugins/slack
+      pull: true
+      channel: dev-ci
+      secrets: [ slack_webhook ]
+      when:
+        status: [ success, failure ]
+      template:  >
+        {{#success build.status}}
+          [{{build.branch}}] *{{repo.name}}* build *{{build.number}}* type: *{{build.event}}* succeeded. {{build.link}}
+        {{else}}
+          [{{build.branch}}] *{{repo.name}}* build *{{build.number}}* type: *{{build.event}}* failed. {{build.link}}
+        {{/success}}

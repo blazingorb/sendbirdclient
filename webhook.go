@@ -24,7 +24,7 @@ const (
 	WebhookCategoryGroupChannelDeclineInvite webhookCategory = "group_channel:decline_invite"
 	WebhookCategoryUserBlocked               webhookCategory = "user:block"
 	WebhookCategoryUserUnblocked             webhookCategory = "user:unblock"
-	WebhookCategoryUserMsgRateLimitExceeded  webhookCategory = "alert:user_message_rate_limit_exceeded	"
+	WebhookCategoryUserMsgRateLimitExceeded  webhookCategory = "alert:user_message_rate_limit_exceeded"
 )
 
 type WebhookCallback func(message interface{}) error
