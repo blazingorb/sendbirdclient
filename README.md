@@ -1,6 +1,6 @@
 Sendbird Client Package for Golang
 ==================================
-[![Drone Build Status](https://droneci.blazingorb.com/api/badges/blazingorb/sendbirdclient/status.svg)](https://droneci.blazingorb.com/api/badges/blazingorb/sendbirdclient/status.svg)
+[![Drone Build Status](https://droneci.blazingorb.com/api/badges/blazingorb/sendbirdclient/status.svg)](https://droneci.blazingorb.com/blazingorb/sendbirdclient)
 [![Go Report Card](https://goreportcard.com/badge/github.com/blazingorb/sendbirdclient)](https://goreportcard.com/report/github.com/blazingorb/sendbirdclient)
 
 ## Features
