@@ -37,7 +37,7 @@ func TestUserActions(t *testing.T) {
 
 	testListBannedChannels(t, TestUserID1)
 
-	testMarkAllMessagesAsRead(t, TestUserID1)
+	//testMarkAllMessagesAsRead(t, TestUserID1)
 
 	testListMyGroupChannels(t, TestUserID1)
 
