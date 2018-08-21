@@ -376,3 +376,31 @@ func (c *Client) LeaveFromAGroupChannel(channelURL string, r *LeaveFromAGroupCha
 type LeaveFromAGroupChannelRequest struct {
 	UserIDs []string `json:"user_ids"`
 }
+
+func (c *Client) SendMessageToGroupChannel(
+	channelURL string,
+	r *SendMessageToGroupChannelRequest,
+) (sendbirdErrorResponse, error) {
+	pathString, err := templates.GetGroupChannelTemplate(
+		groupChannelsTemplateData{ChannelURL: url.PathEscape(channelURL)},
+		templates.SendbirdURLGroupChannelsSendMessageWithChannelURL,
+	)
+	if err != nil {
+		return sendbirdErrorResponse{}, err
+	}
+
+	parsedURL := c.PrepareUrl(pathString)
+
+	result := sendbirdErrorResponse{}
+
+	if err := c.postAndReturnJSON(parsedURL, r, &result); err != nil {
+		return sendbirdErrorResponse{}, err
+	}
+	return result, nil
+}
+
+type SendMessageToGroupChannelRequest struct {
+	MessageType string `json:"message_type"`
+	UserID      string `json:"user_id"`
+	Message     string `json:"message"`
+}

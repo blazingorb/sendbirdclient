@@ -67,6 +67,7 @@ const (
 	{{define "invite"}}{{template "base" .}}/invite{{end}}
 	{{define "hide"}}{{template "base" .}}/hide{{end}}
 	{{define "leave"}}{{template "base" .}}/leave{{end}}
+	{{define "messages"}}{{template "base" .}}/messages{{end}}
 
 	{{template "base"}}
 	{{template "members"}}
@@ -74,6 +75,7 @@ const (
 	{{template "invite"}}
 	{{template "hide"}}
 	{{template "leave"}}
+	{{template "messages"}}
 	`
 
 	SendbirdURLChannelMetadataTemplate = `
@@ -144,6 +146,7 @@ const (
 	SendbirdURLGroupChannelsInviteWithChannelURL           templateKeysGroupChannels = `invite`
 	SendbirdURLGroupChannelsHideWithChannelURL             templateKeysGroupChannels = `hide`
 	SendbirdURLGroupChannelsLeaveWithChannelURL            templateKeysGroupChannels = `leave`
+	SendbirdURLGroupChannelsSendMessageWithChannelURL      templateKeysGroupChannels = `messages`
 
 	//Channel Metadata
 	SendbirdURLChannelMetadataWithChannelTypeAndChannelURL              templateKeysChannelMetadata = `chMeta`
