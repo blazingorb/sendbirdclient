@@ -60,7 +60,7 @@ func TestGroupChannelsActions(t *testing.T) {
 }
 
 func testCreateAGroupChannelWithURL(t *testing.T, name string, coverURL string, userIDs []string) GroupChannel {
-	r := &CreateAGroupChannelWithURLRequest{
+	r := &CreateAGroupChannelRequest{
 		Name:     name,
 		CoverURL: coverURL,
 		UserIDs:  userIDs,

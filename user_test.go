@@ -65,7 +65,7 @@ func testCreateAUserWithURL(t *testing.T, userID string) {
 		ProfileURL: "",
 	}
 
-	result, err := testUserClient.CreateAUserWithURL(r)
+	result, err := testUserClient.CreateAUser(r)
 	if err != nil && !strings.Contains(err.Error(), SendbirdAPIErrorUniqueIDConstraint) {
 		t.Errorf("Fail in testCreateAUserWithURL(): %+v", err)
 	}
@@ -92,7 +92,7 @@ func testUpdateAUserWithURL(t *testing.T, userID string) {
 		ProfileURL: "",
 	}
 
-	result, err := testUserClient.UpdateAUserWithURL(userID, r)
+	result, err := testUserClient.UpdateAUser(userID, r)
 	if err != nil {
 		t.Errorf("Fail in testUpdateAUserWithURL(): %+v", err)
 	}

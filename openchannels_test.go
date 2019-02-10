@@ -60,7 +60,7 @@ func TestOpenChannelsActions(t *testing.T) {
 }
 
 func testCreateAnOpenChannelWithURL(t *testing.T, name string, channelURL string, operators []string) {
-	r := &CreateAnOpenChannelWithURLRequest{
+	r := &CreateAnOpenChannelRequest{
 		Name:       name,
 		ChannelURL: channelURL,
 		Operators:  operators,
@@ -86,7 +86,7 @@ func testListOpenChannels(t *testing.T) {
 }
 
 func testUpdateAnOpenChannelWithURL(t *testing.T, channelURL string, updateName string) {
-	r := &UpdateAnOpenChannelWithURLRequest{
+	r := &UpdateAnOpenChannelRequest{
 		Name: updateName,
 	}
 
