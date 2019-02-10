@@ -9,14 +9,21 @@ import (
 )
 
 type User struct {
-	UserID      string `json:"user_id"`
-	NickName    string `json:"nickname"`
-	ProfileURL  string `json:"profile_url"`
-	ProfileFile []byte `json:"profile_file"`
-	AccessToken string `json:"access_token"`
-	IsActive    bool   `json:"is_active"`
-	IsOnline    bool   `json:"is_online"`
-	LastSeenAt  int64  `json:"last_seen_at"`
+	UserID        string `json:"user_id"`
+	NickName      string `json:"nickname"`
+	ProfileURL    string `json:"profile_url"`
+	ProfileFile   []byte `json:"profile_file"`
+	AccessToken   string `json:"access_token"`
+	SessionTokens []struct {
+		SessionToken string `json:"session_token"`
+		ExpiresAt    int64  `json:"expiresAt"`
+	} `json:"session_tokens"`
+	HasEverLoggedIn string                 `json:"has_ever_logged_in"`
+	IsActive        bool                   `json:"is_active"`
+	IsOnline        bool                   `json:"is_online"`
+	DiscoveryKeys   []string               `json:"discovery_keys"`
+	LastSeenAt      int64                  `json:"last_seen_at"`
+	Metadata        map[string]interface{} `json:"metadata"`
 }
 
 type usersTemplateData struct {
@@ -27,7 +34,7 @@ type usersTemplateData struct {
 	ChannelURL string
 }
 
-func (c *Client) CreateAUserWithURL(r *CreateAUserWithURLRequest) (User, error) {
+func (c *Client) CreateAUserWithURL(r *CreateAUserRequest) (User, error) {
 	if r.UserID == "" {
 		return User{}, errors.New("user: UserID missing")
 	}
@@ -41,22 +48,18 @@ func (c *Client) CreateAUserWithURL(r *CreateAUserWithURLRequest) (User, error) 
 	return result, nil
 }
 
-type CreateAUserWithURLRequest struct {
-	UserID           string `json:"user_id"`
-	NickName         string `json:"nickname"`
-	ProfileURL       string `json:"profile_url"`
-	IssueAccessToken bool   `json:"issue_access_token,omitempty"`
+type CreateAUserRequest struct {
+	UserID                string `json:"user_id"`
+	NickName              string `json:"nickname"`
+	ProfileURL            string `json:"profile_url"`
+	ProfileFile           []byte `json:"profile_file,omitempty"`
+	IssueAccessToken      bool   `json:"issue_access_token,omitempty"`
+	IssueSessionToken     bool   `json:"issue_session_token,omitempty"`
+	SessionTokenExpiresAt int64  `json:"session_token_expires_at,omitempty"`
 }
 
-func (c *Client) CreateAUserWithFile(r *CreateAUserWithFileRequest) (User, error) {
+func (c *Client) CreateAUserWithFile(r *CreateAUserRequest) (User, error) {
 	return User{}, errors.New(SendbirdClientErrorNotImplemented)
-}
-
-type CreateAUserWithFileRequest struct {
-	UserID           string `json:"user_id"`
-	NickName         string `json:"nickname"`
-	ProfileFile      string `json:"profile_file"`
-	IssueAccessToken bool   `json:"issue_access_token,omitempty"`
 }
 
 func (c *Client) ListUsers(r *ListUsersRequest) (ListUsersResponse, error) {
@@ -114,7 +117,7 @@ type ListUsersResponse struct {
 	Next  string `json:"next"`
 }
 
-func (c *Client) UpdateAUserWithURL(userID string, r *UpdateAUserWithURLRequest) (User, error) {
+func (c *Client) UpdateAUserWithURL(userID string, r *UpdateAUserRequest) (User, error) {
 	pathString, err := templates.GetUsersTemplate(usersTemplateData{UserID: url.PathEscape(userID)}, templates.SendbirdURLUserswithUserID)
 	if err != nil {
 		return User{}, err
@@ -131,24 +134,21 @@ func (c *Client) UpdateAUserWithURL(userID string, r *UpdateAUserWithURLRequest)
 	return result, nil
 }
 
-type UpdateAUserWithURLRequest struct {
-	NickName                string `json:"nickname,omitempty"`
-	ProfileURL              string `json:"profile_url,omitempty"`
-	IssueAccessToken        bool   `json:"issue_access_token,omitempty"`
-	IsActive                bool   `json:"is_active,omitempty"`
-	LeaveAllWhenDeactivated bool   `json:"leave_all_when_deactivated,omitempty"`
+type UpdateAUserRequest struct {
+	NickName                string   `json:"nickname,omitempty"`
+	ProfileURL              string   `json:"profile_url,omitempty"`
+	ProfileFile             []byte   `json:"profile_file,omitempty"`
+	IssueAccessToken        bool     `json:"issue_access_token,omitempty"`
+	IssueSessionToken       bool     `json:"issue_session_token,omitempty"`
+	SessionTokenExpiresAt   int64    `json:"session_token_expires_at,omitempty"`
+	IsActive                bool     `json:"is_active,omitempty"`
+	LastSeenAt              int64    `json:"last_seen_at,omitempty"`
+	DiscoveryKeys           []string `json:"discovery_keys,omitempty"`
+	LeaveAllWhenDeactivated bool     `json:"leave_all_when_deactivated,omitempty"`
 }
 
-func (c *Client) UpdateAUserWithFile(userID string, r *UpdateAUserWithFileRequest) (User, error) {
+func (c *Client) UpdateAUserWithFile(userID string, r *UpdateAUserRequest) (User, error) {
 	return User{}, errors.New(SendbirdClientErrorNotImplemented)
-}
-
-type UpdateAUserWithFileRequest struct {
-	NickName                string `json:"nickname,omitempty"`
-	ProfileFile             string `json:"profile_file,omitempty"`
-	IssueAccessToken        bool   `json:"issue_access_token,omitempty"`
-	IsActive                bool   `json:"is_active,omitempty"`
-	LeaveAllWhenDeactivated bool   `json:"leave_all_when_deactivated,omitempty"`
 }
 
 func (c *Client) ViewAUser(userID string) (User, error) {

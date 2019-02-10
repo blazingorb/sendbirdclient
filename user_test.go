@@ -59,7 +59,7 @@ func TestUserActions(t *testing.T) {
 }
 
 func testCreateAUserWithURL(t *testing.T, userID string) {
-	r := &CreateAUserWithURLRequest{
+	r := &CreateAUserRequest{
 		UserID:     userID,
 		NickName:   userID,
 		ProfileURL: "",
@@ -87,7 +87,7 @@ func testListUsers(t *testing.T, userIDs ...string) {
 }
 
 func testUpdateAUserWithURL(t *testing.T, userID string) {
-	r := &UpdateAUserWithURLRequest{
+	r := &UpdateAUserRequest{
 		NickName:   TestUpdatedValue,
 		ProfileURL: "",
 	}
