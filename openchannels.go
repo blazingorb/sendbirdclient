@@ -22,8 +22,12 @@ type openChannelsTemplateData struct {
 	MutedUserID  string
 }
 
-func (c *Client) CreateAnOpenChannelWithURL(r *CreateAnOpenChannelWithURLRequest) (OpenChannel, error) {
+func (c *Client) CreateAnOpenChannelWithURL(r *CreateAnOpenChannelRequest) (OpenChannel, error) {
 	result := OpenChannel{}
+
+	if r.CoverFile != nil {
+		return OpenChannel{}, errors.New(SendbirdClientErrorNotImplemented)
+	}
 
 	if err := c.postAndReturnJSON(c.PrepareUrl(SendbirdURLOpenChannels), r, &result); err != nil {
 		return OpenChannel{}, err
@@ -32,22 +36,10 @@ func (c *Client) CreateAnOpenChannelWithURL(r *CreateAnOpenChannelWithURLRequest
 	return result, nil
 }
 
-type CreateAnOpenChannelWithURLRequest struct {
+type CreateAnOpenChannelRequest struct {
 	Name       string   `json:"name,omitempty"`
 	ChannelURL string   `json:"channel_url,omitempty"`
 	CoverURL   string   `json:"cover_url,omitempty"`
-	CustomType string   `json:"custom_type,omitempty"`
-	Data       string   `json:"data,omitempty"`
-	Operators  []string `json:"operators,omitempty"`
-}
-
-func (c *Client) CreateAnOpenChannelWithFile(r *CreateAnOpenChannelWithFileRequest) (OpenChannel, error) {
-	return OpenChannel{}, errors.New(SendbirdClientErrorNotImplemented)
-}
-
-type CreateAnOpenChannelWithFileRequest struct {
-	Name       string   `json:"name,omitempty"`
-	ChannelURL string   `json:"channel_url,omitempty"`
 	CoverFile  []byte   `json:"cover_file,omitempty"`
 	CustomType string   `json:"custom_type,omitempty"`
 	Data       string   `json:"data,omitempty"`
@@ -94,10 +86,14 @@ type ListOpenChannelsResponse struct {
 	Next     string        `json:"next"`
 }
 
-func (c *Client) UpdateAnOpenChannelWithURL(channelURL string, r *UpdateAnOpenChannelWithURLRequest) (OpenChannel, error) {
+func (c *Client) UpdateAnOpenChannelWithURL(channelURL string, r *UpdateAnOpenChannelRequest) (OpenChannel, error) {
 	pathString, err := templates.GetOpenChannelTemplate(openChannelsTemplateData{ChannelURL: url.PathEscape(channelURL)}, templates.SendbirdURLOpenChannelsWithChannelURL)
 	if err != nil {
 		return OpenChannel{}, err
+	}
+
+	if r.CoverFile != nil {
+		return OpenChannel{}, errors.New(SendbirdClientErrorNotImplemented)
 	}
 
 	parsedURL := c.PrepareUrl(pathString)
@@ -111,22 +107,11 @@ func (c *Client) UpdateAnOpenChannelWithURL(channelURL string, r *UpdateAnOpenCh
 	return result, nil
 }
 
-type UpdateAnOpenChannelWithURLRequest struct {
+type UpdateAnOpenChannelRequest struct {
 	Name       string   `json:"name,omitempty"`
 	CoverURL   string   `json:"cover_url,omitempty"`
+	CoverFile  []byte   `json:"cover_file,omitempty"`
 	CustomType string   `json:"custom_type,omitempty"`
-	Data       string   `json:"data,omitempty"`
-	Operators  []string `json:"operators,omitempty"`
-}
-
-func (c *Client) UpdateAnOpenChannelWithFile(channelURL string, r *UpdateAnOpenChannelWithFileRequest) (OpenChannel, error) {
-	return OpenChannel{}, errors.New(SendbirdClientErrorNotImplemented)
-}
-
-type UpdateAnOpenChannelWithFileRequest struct {
-	Name       string   `json:"name,omitempty"`
-	CustomType string   `json:"custom_type,omitempty"`
-	CoverFile  string   `json:"cover_file,omitempty"`
 	Data       string   `json:"data,omitempty"`
 	Operators  []string `json:"operators,omitempty"`
 }

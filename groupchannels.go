@@ -29,8 +29,12 @@ type groupChannelsTemplateData struct {
 	UserID     string
 }
 
-func (c *Client) CreateAGroupChannelWithURL(r *CreateAGroupChannelWithURLRequest) (GroupChannel, error) {
+func (c *Client) CreateAGroupChannelWithURL(r *CreateAGroupChannelRequest) (GroupChannel, error) {
 	result := GroupChannel{}
+
+	if r.CoverFile != nil {
+		return GroupChannel{}, errors.New(SendbirdClientErrorNotImplemented)
+	}
 
 	if err := c.postAndReturnJSON(c.PrepareUrl(SendbirdURLGroupChannels), r, &result); err != nil {
 		return GroupChannel{}, err
@@ -39,21 +43,9 @@ func (c *Client) CreateAGroupChannelWithURL(r *CreateAGroupChannelWithURLRequest
 	return result, nil
 }
 
-type CreateAGroupChannelWithURLRequest struct {
+type CreateAGroupChannelRequest struct {
 	Name       string   `json:"name,omitempty"`
 	CoverURL   string   `json:"cover_url,omitempty"`
-	CustomType string   `json:"custom_type,omitempty"`
-	Data       string   `json:"data,omitempty"`
-	UserIDs    []string `json:"user_ids,omitempty"`
-	IsDistinct bool     `json:"is_distinct,omitempty"`
-}
-
-func (c *Client) CreateAGroupChannelWithFile(r *CreateAGroupChannelWithFileRequest) (GroupChannel, error) {
-	return GroupChannel{}, errors.New(SendbirdClientErrorNotImplemented)
-}
-
-type CreateAGroupChannelWithFileRequest struct {
-	Name       string   `json:"name,omitempty"`
 	CoverFile  []byte   `json:"cover_file,omitempty"`
 	CustomType string   `json:"custom_type,omitempty"`
 	Data       string   `json:"data,omitempty"`

@@ -34,9 +34,12 @@ type usersTemplateData struct {
 	ChannelURL string
 }
 
-func (c *Client) CreateAUserWithURL(r *CreateAUserRequest) (User, error) {
+func (c *Client) CreateAUser(r *CreateAUserRequest) (User, error) {
 	if r.UserID == "" {
 		return User{}, errors.New("user: UserID missing")
+	}
+	if r.ProfileFile != nil {
+		return User{}, errors.New(SendbirdClientErrorNotImplemented)
 	}
 
 	result := User{}
@@ -56,10 +59,6 @@ type CreateAUserRequest struct {
 	IssueAccessToken      bool   `json:"issue_access_token,omitempty"`
 	IssueSessionToken     bool   `json:"issue_session_token,omitempty"`
 	SessionTokenExpiresAt int64  `json:"session_token_expires_at,omitempty"`
-}
-
-func (c *Client) CreateAUserWithFile(r *CreateAUserRequest) (User, error) {
-	return User{}, errors.New(SendbirdClientErrorNotImplemented)
 }
 
 func (c *Client) ListUsers(r *ListUsersRequest) (ListUsersResponse, error) {
@@ -117,10 +116,14 @@ type ListUsersResponse struct {
 	Next  string `json:"next"`
 }
 
-func (c *Client) UpdateAUserWithURL(userID string, r *UpdateAUserRequest) (User, error) {
+func (c *Client) UpdateAUser(userID string, r *UpdateAUserRequest) (User, error) {
 	pathString, err := templates.GetUsersTemplate(usersTemplateData{UserID: url.PathEscape(userID)}, templates.SendbirdURLUserswithUserID)
 	if err != nil {
 		return User{}, err
+	}
+
+	if r.ProfileFile != nil {
+		return User{}, errors.New(SendbirdClientErrorNotImplemented)
 	}
 
 	parsedURL := c.PrepareUrl(pathString)
@@ -145,10 +148,6 @@ type UpdateAUserRequest struct {
 	LastSeenAt              int64    `json:"last_seen_at,omitempty"`
 	DiscoveryKeys           []string `json:"discovery_keys,omitempty"`
 	LeaveAllWhenDeactivated bool     `json:"leave_all_when_deactivated,omitempty"`
-}
-
-func (c *Client) UpdateAUserWithFile(userID string, r *UpdateAUserRequest) (User, error) {
-	return User{}, errors.New(SendbirdClientErrorNotImplemented)
 }
 
 func (c *Client) ViewAUser(userID string) (User, error) {
