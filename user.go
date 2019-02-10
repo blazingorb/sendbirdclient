@@ -18,7 +18,7 @@ type User struct {
 		SessionToken string `json:"session_token"`
 		ExpiresAt    int64  `json:"expiresAt"`
 	} `json:"session_tokens"`
-	HasEverLoggedIn string                 `json:"has_ever_logged_in"`
+	HasEverLoggedIn bool                   `json:"has_ever_logged_in"`
 	IsActive        bool                   `json:"is_active"`
 	IsOnline        bool                   `json:"is_online"`
 	DiscoveryKeys   []string               `json:"discovery_keys"`
