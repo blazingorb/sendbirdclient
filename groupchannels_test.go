@@ -47,6 +47,9 @@ func TestGroupChannelsActions(t *testing.T) {
 
 	testInviteMembersToGroupChannel(t, groupChannel.ChannelURL, TestGroupChannelAdditionalUsers)
 
+	testFreezeAnGroupChannel(t, groupChannel.ChannelURL, true)
+	testFreezeAnGroupChannel(t, groupChannel.ChannelURL, false)
+
 	testHideFromAGroupChannel(t, groupChannel.ChannelURL, TestGroupnChannelUserID1)
 
 	testLeaveFromAGroupChannel(t, groupChannel.ChannelURL, TestGroupChannelAdditionalUsers)
@@ -182,4 +185,16 @@ func testLeaveFromAGroupChannel(t *testing.T, channelURL string, leaveUserIDs []
 	}
 
 	t.Logf("testLeaveFromAGroupChannel() Result: %+v", result)
+}
+
+func testFreezeAnGroupChannel(t *testing.T, channelURL string, freeze bool) {
+	r := &FreezeAnGroupChannelRequest{
+		Freeze: freeze,
+	}
+	result, err := testGroupChannelClient.FreezeAnGroupChannel(channelURL, r)
+	if err != nil {
+		t.Errorf("Fail in testFreezeAnGroupChannel(): %+v", err)
+	}
+
+	t.Logf("testFreezeAnGroupChannel() Result: %+v", result)
 }

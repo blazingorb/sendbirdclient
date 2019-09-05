@@ -376,3 +376,24 @@ func (c *Client) LeaveFromAGroupChannel(channelURL string, r *LeaveFromAGroupCha
 type LeaveFromAGroupChannelRequest struct {
 	UserIDs []string `json:"user_ids"`
 }
+
+func (c *Client) FreezeAnGroupChannel(channelURL string, r *FreezeAnGroupChannelRequest) (GroupChannel, error) {
+	pathString, err := templates.GetGroupChannelTemplate(groupChannelsTemplateData{ChannelURL: url.PathEscape(channelURL)}, templates.SendbirdURLGroupChannelsFreezeWithChannelURL)
+	if err != nil {
+		return GroupChannel{}, err
+	}
+
+	parsedURL := c.PrepareUrl(pathString)
+
+	result := GroupChannel{}
+
+	if err := c.putAndReturnJSON(parsedURL, r, &result); err != nil {
+		return GroupChannel{}, err
+	}
+
+	return result, nil
+}
+
+type FreezeAnGroupChannelRequest struct {
+	Freeze bool `json:"freeze"`
+}

@@ -119,6 +119,7 @@ const (
 	SendbirdURLResultGroupChannelsInviteWithChannelURL           = `/group_channels/TestChannelURL/invite`
 	SendbirdURLResultGroupChannelsHideWithChannelURL             = `/group_channels/TestChannelURL/hide`
 	SendbirdURLResultGroupChannelsLeaveWithChannelURL            = `/group_channels/TestChannelURL/leave`
+	SendbirdURLResultGroupChannelsFreezeWithChannelURL           = `/group_channels/TestChannelURL/freeze`
 
 	//Group Metadata
 	SendbirdURLResultChannelMetadataWithChannelTypeAndChannelURL              = `/open_channels/TestChannelURL/metadata`
